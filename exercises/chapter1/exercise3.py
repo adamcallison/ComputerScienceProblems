@@ -25,15 +25,38 @@ def hanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
         hanoi(temp, end, begin, n - 1)
 
 def myhanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
-    recursion_stack: Stack[Tuple[Stack[int], Stack[int], Stack[int], int]]
-    recursion_stack.push((begin, end, temp, n))
+    if n == 1:
+        end.push(begin.pop())
+        return
+
+    recursion_stack: Stack[Tuple[Stack[int], Stack[int], Stack[int], int, int, bool]] = Stack()
+    recursion_stack.push((begin, end, temp, n, 0))
+    # positions:
+    # 0: before first recursive call
+    # 1: after first recursive call
+    # 2: after second recursive call
     while len(recursion_stack._container) > 0:
-        # unfinished
-
-
-
-
+        begin_curr, end_curr, temp_curr, n_curr, position = recursion_stack.pop()
+        if position == 0:
+            recursion_stack.push((begin_curr, end_curr, temp_curr, n_curr, 1))
+            if n_curr == 2:
+                temp_curr.push(begin_curr.pop())
+            else:
+                recursion_stack.push((begin_curr, temp_curr, end_curr, n_curr-1, 0))
+        elif position == 1:
+            end_curr.push(begin_curr.pop())
+            recursion_stack.push((begin_curr, end_curr, temp_curr, n_curr, 2))
+            if n_curr == 2:
+                end_curr.push(temp_curr.pop())
+            else:
+                recursion_stack.push((temp_curr, end_curr, begin_curr, n_curr-1, 0))
+        else: #position == 2
+            pass
+    return
+        
 if __name__ == '__main__':
+
+    print("==== BOOK VERSION ====")
     # listing 1.21
     num_discs: int = 3
     tower_a: Stack[int] = Stack()
@@ -42,8 +65,20 @@ if __name__ == '__main__':
     for i in range(1, num_discs + 1):
         tower_a.push(i)
 
+    print(f"{tower_a}  {tower_b}  {tower_c}       ")
+
     # listing 1.23
     hanoi(tower_a, tower_c, tower_b, num_discs)
-    print(tower_a)
-    print(tower_b)
-    print(tower_c)
+    print(f"{tower_a}  {tower_b}  {tower_c}       ")
+
+    print("==== MY NON-RECURSIVE VERSION ====")
+    num_discs: int = 3
+    tower_a: Stack[int] = Stack()
+    tower_b: Stack[int] = Stack()
+    tower_c: Stack[int] = Stack()
+    for i in range(1, num_discs + 1):
+        tower_a.push(i)
+
+    print(f"{tower_a}  {tower_b}  {tower_c}       ")
+    myhanoi(tower_a, tower_c, tower_b, num_discs)
+    print(f"{tower_a}  {tower_b}  {tower_c}       ")
