@@ -1,3 +1,19 @@
+
+# ==== BEGIN MY SOLUTION ====
+from itertools import product
+from typing import List
+solution_stored: List[int] = [0, 1]
+def solution(n: int) -> int:
+    global solution_stored
+    if len(solution_stored) >= n+1:
+        pass
+    else:
+        for _ in range(2, n+1):
+            solution_stored.append(solution_stored[-2]+solution_stored[-1])
+    return solution_stored[n]
+# ==== END MY SOLUTION ====
+
+
 # listing 1.3
 def fib2(n: int) -> int:
     if n < 2: # base case
@@ -38,18 +54,6 @@ def fib6(n: int) -> Generator[int, None, None]:
     for _ in range(1, n):
         last, next = next, last + next
         yield next # main generation step
-
-from itertools import product
-from typing import List
-solution_stored: List[int] = [0, 1]
-def solution(n: int) -> int:
-    global solution_stored
-    if len(solution_stored) >= n+1:
-        pass
-    else:
-        for _ in range(2, n+1):
-            solution_stored.append(solution_stored[-2]+solution_stored[-1])
-    return solution_stored[n]
 
 if __name__ == '__main__':
     from time import time

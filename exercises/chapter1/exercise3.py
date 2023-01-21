@@ -15,16 +15,11 @@ class Stack(Generic[T]):
     def __repr__(self) -> str:
         return repr(self._container)
 
-# listing 1.22
-def hanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
-    if n == 1:
-        end.push(begin.pop())
-    else:
-        hanoi(begin, temp, end, n - 1)
-        hanoi(begin, end, temp, 1)
-        hanoi(temp, end, begin, n - 1)
-
+# ==== BEGIN MY SOLUTION ====
 def myhanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
+    """
+    3-tower hanoi solver with explicit stack to avoid recursion
+    """
     if n == 1:
         end.push(begin.pop())
         return
@@ -49,6 +44,17 @@ def myhanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> Non
             else:
                 recursion_stack.push((temp_curr, end_curr, begin_curr, n_curr-1, 0))
     return
+
+# ==== END MY SOLUTION ====
+
+# listing 1.22
+def hanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
+    if n == 1:
+        end.push(begin.pop())
+    else:
+        hanoi(begin, temp, end, n - 1)
+        hanoi(begin, end, temp, 1)
+        hanoi(temp, end, begin, n - 1)
         
 if __name__ == '__main__':
 
