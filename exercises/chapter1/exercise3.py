@@ -24,7 +24,7 @@ def hanoi_nonrecursive(begin: Stack[int], end: Stack[int], temp: Stack[int], n: 
         end.push(begin.pop())
         return
 
-    recursion_stack: Stack[Tuple[Stack[int], Stack[int], Stack[int], int, int, bool]] = Stack()
+    recursion_stack: Stack[Tuple[Stack[int], Stack[int], Stack[int], int, int]] = Stack()
     recursion_stack.push((begin, end, temp, n, 0))
     # positions:
     # 0: before first recursive call
@@ -44,6 +44,25 @@ def hanoi_nonrecursive(begin: Stack[int], end: Stack[int], temp: Stack[int], n: 
             else:
                 recursion_stack.push((temp_curr, end_curr, begin_curr, n_curr-1, 0))
     return
+
+def hanoi_mtowers(towers: Tuple[Stack[int]], n: int) -> None:
+    """
+    Recursive hanoi solver for arbitrarily many towers.
+    First two towers are begin and end. The rest are temp.
+    """
+    # THERE IS PROBABLY A SLIGHTLY MORE EFFICIENT WAY
+    begin, end, temps = towers[0], towers[1], towers[2:]
+    m = len(temps)
+    if n <= m:
+        for j in range(1, n):
+            temps[j].push(begin.pop())
+        end.push(begin.pop())
+        for j in range(n-1, 0, -1):
+            end.push(temps[j].pop())
+    else:
+        hanoi_mtowers((begin, temps[0], end) + temps[1:], n - m)
+        hanoi_mtowers((begin, end) + temps, m)
+        hanoi_mtowers((temps[0], end, begin) + temps[1:], n - m)
 
 # ==== END MY SOLUTION ====
 
@@ -84,3 +103,13 @@ if __name__ == '__main__':
     print(f"{tower_a}  {tower_b}  {tower_c}       ")
     hanoi_nonrecursive(tower_a, tower_c, tower_b, num_discs)
     print(f"{tower_a}  {tower_b}  {tower_c}       ")
+
+    print("==== MY RECURSIVE MANY-TOWER VERSION ====")
+    num_towers = 4
+    towers: Tuple[Stack[int]] = tuple(Stack() for j in range(num_towers))
+    for i in range(1, num_discs + 1):
+        towers[0].push(i)
+
+    print(f"{towers}      ")
+    hanoi_mtowers(towers, num_discs)
+    print(f"{towers}      ")

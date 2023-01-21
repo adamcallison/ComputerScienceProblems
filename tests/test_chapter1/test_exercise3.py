@@ -32,6 +32,16 @@ def test_hanoi_nonrecursive(num_discs: int):
     assert tower_b._container == []
     assert tower_c._container == list(range(1, num_discs+1))
 
+@pytest.mark.parametrize("num_discs", range(1, 11))
+@pytest.mark.parametrize("num_towers", range(3, 11))
+def test_hanoi_mtowers(num_discs: int, num_towers: int):
+    towers: Tuple[HanoiTestingStack[int]] = tuple(HanoiTestingStack() for j in range(num_towers))
+    for i in range(1, num_discs + 1):
+        towers[0].push(i)
 
+    exercise3.hanoi_mtowers(towers, num_discs)
 
-    
+    assert towers[0]._container == []
+    assert towers[1]._container == list(range(1, num_discs+1))
+    for j in range(2, len(towers)):
+        assert towers[j]._container == []
