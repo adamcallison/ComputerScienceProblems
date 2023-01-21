@@ -34,7 +34,6 @@ def myhanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> Non
     # positions:
     # 0: before first recursive call
     # 1: after first recursive call
-    # 2: after second recursive call
     while len(recursion_stack._container) > 0:
         begin_curr, end_curr, temp_curr, n_curr, position = recursion_stack.pop()
         if position == 0:
@@ -45,20 +44,18 @@ def myhanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> Non
                 recursion_stack.push((begin_curr, temp_curr, end_curr, n_curr-1, 0))
         elif position == 1:
             end_curr.push(begin_curr.pop())
-            recursion_stack.push((begin_curr, end_curr, temp_curr, n_curr, 2))
             if n_curr == 2:
                 end_curr.push(temp_curr.pop())
             else:
                 recursion_stack.push((temp_curr, end_curr, begin_curr, n_curr-1, 0))
-        else: #position == 2
-            pass
     return
         
 if __name__ == '__main__':
 
     print("==== BOOK VERSION ====")
     # listing 1.21
-    num_discs: int = 3
+    num_discs: int = 10
+    
     tower_a: Stack[int] = Stack()
     tower_b: Stack[int] = Stack()
     tower_c: Stack[int] = Stack()
@@ -72,7 +69,6 @@ if __name__ == '__main__':
     print(f"{tower_a}  {tower_b}  {tower_c}       ")
 
     print("==== MY NON-RECURSIVE VERSION ====")
-    num_discs: int = 3
     tower_a: Stack[int] = Stack()
     tower_b: Stack[int] = Stack()
     tower_c: Stack[int] = Stack()
