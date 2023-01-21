@@ -16,7 +16,7 @@ class Stack(Generic[T]):
         return repr(self._container)
 
 # ==== BEGIN MY SOLUTION ====
-def myhanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
+def hanoi_nonrecursive(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
     """
     3-tower hanoi solver with explicit stack to avoid recursion
     """
@@ -82,5 +82,5 @@ if __name__ == '__main__':
         tower_a.push(i)
 
     print(f"{tower_a}  {tower_b}  {tower_c}       ")
-    myhanoi(tower_a, tower_c, tower_b, num_discs)
+    hanoi_nonrecursive(tower_a, tower_c, tower_b, num_discs)
     print(f"{tower_a}  {tower_b}  {tower_c}       ")
